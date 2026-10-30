@@ -50,3 +50,5 @@ if [ -f /var/run/reboot-required ]; then
     *) echo "Reboot skipped. Remember to reboot later." ;;
   esac
 fi
+
+exit 0
