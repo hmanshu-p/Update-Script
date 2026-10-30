@@ -5,25 +5,6 @@ LOGFILE="$HOME/.update.log"
 exec > >(tee -a "$LOGFILE") 2>&1
 echo "=== Update started: $(date) ==="
 
-if command -v nordvpn &> /dev/null; then
-  read -p "Do you want to connect to NordVPN? (y/n): " VPN_CHOICE
-  case "$VPN_CHOICE" in
-    y|Y)
-      echo "Connecting to NordVPN..."
-      nordvpn connect
-      ;;
-    n|N)
-      echo "Skipping NordVPN connection."
-      ;;
-    *)
-      echo "Invalid choice. Please enter y or n."
-      exit 1
-      ;;
-  esac
-else
-  echo "NordVPN not installed, skipping."
-fi
-
 echo "--- APT ---"
 sudo apt-get update -y
 sudo apt-get full-upgrade -y
@@ -49,6 +30,25 @@ if [ -f /var/run/reboot-required ]; then
     y|Y) sudo reboot ;;
     *) echo "Reboot skipped. Remember to reboot later." ;;
   esac
+fi
+
+if command -v nordvpn &> /dev/null; then
+  read -p "Do you want to connect to NordVPN? (y/n): " VPN_CHOICE
+  case "$VPN_CHOICE" in
+    y|Y)
+      echo "Connecting to NordVPN..."
+      nordvpn connect
+      ;;
+    n|N)
+      echo "Skipping NordVPN connection."
+      ;;
+    *)
+      echo "Invalid choice. Please enter y or n."
+      exit 1
+      ;;
+  esac
+else
+  echo "NordVPN not installed, skipping."
 fi
 
 exit 0
